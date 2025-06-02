@@ -5,6 +5,7 @@ import 'package:untitled1/common/const/dio.dart';
 import 'package:untitled1/common/const/storage.dart';
 import 'package:untitled1/restaurant/components/restaurant_card.dart';
 import 'package:untitled1/restaurant/model/restaurant_model.dart';
+import 'package:untitled1/restaurant/view/restauran_detail_screen.dart';
 
 class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({super.key});
@@ -30,17 +31,26 @@ class RestaurantScreen extends StatelessWidget {
             future: paginateRestaurants(),
             builder: (context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
-                return Container();
+                return Center(child: CircularProgressIndicator());
               }
 
               return ListView.separated(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
-                  final pItem2 = RestaurantModel.fromJson(
+                  final item = RestaurantModel.fromJson(
                     json: snapshot.data![index],
                   );
 
-                  return RestaurantCard.fromModel(model: pItem2);
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => RestauranDetailScreen(id: item.id),
+                        ),
+                      );
+                    },
+                    child: RestaurantCard.fromModel(model: item),
+                  );
                 },
                 separatorBuilder: (_, index) {
                   return const SizedBox(height: 16);

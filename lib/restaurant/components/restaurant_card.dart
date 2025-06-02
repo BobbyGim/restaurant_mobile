@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/common/const/colors.dart';
+import 'package:untitled1/restaurant/model/restaurant_detail_model.dart';
 import 'package:untitled1/restaurant/model/restaurant_model.dart';
 
 class RestaurantCard extends StatelessWidget {
@@ -11,6 +12,9 @@ class RestaurantCard extends StatelessWidget {
   final int deliveryFee;
   final double ratings;
 
+  final bool isDetail;
+  final String? detail;
+
   const RestaurantCard({
     super.key,
     required this.image,
@@ -20,9 +24,14 @@ class RestaurantCard extends StatelessWidget {
     required this.deliveryTime,
     required this.deliveryFee,
     required this.ratings,
+    this.isDetail = false,
+    this.detail,
   });
 
-  factory RestaurantCard.fromModel({required RestaurantModel model}) {
+  factory RestaurantCard.fromModel({
+    required RestaurantModel model,
+    bool isDetail = false,
+  }) {
     return RestaurantCard(
       image: Image.network(
         model.thumbUrl,
@@ -35,6 +44,8 @@ class RestaurantCard extends StatelessWidget {
       deliveryTime: model.deliveryTime,
       deliveryFee: model.deliveryFee,
       ratings: model.ratings,
+      isDetail: isDetail,
+      detail: model is RestaurantDetailModel ? model.detail : null,
     );
   }
 
@@ -42,45 +53,62 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ClipRRect(borderRadius: BorderRadius.circular(12), child: image),
+        if (!isDetail)
+          ClipRRect(borderRadius: BorderRadius.circular(12), child: image),
+
+        if (isDetail) image,
+
         const SizedBox(height: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              name,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              tags.join(' · '),
-              style: TextStyle(fontSize: 14, color: BODY_TEXT_COLOR),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                _IconText(icon: Icons.star, label: ratings.toString()),
 
-                renderDot(),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: isDetail ? 16.0 : 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                name,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                tags.join(' · '),
+                style: TextStyle(fontSize: 14, color: BODY_TEXT_COLOR),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  _IconText(icon: Icons.star, label: ratings.toString()),
 
-                _IconText(icon: Icons.receipt, label: ratingsCount.toString()),
+                  renderDot(),
 
-                renderDot(),
+                  _IconText(
+                    icon: Icons.receipt,
+                    label: ratingsCount.toString(),
+                  ),
 
-                _IconText(
-                  icon: Icons.timelapse_outlined,
-                  label: '$deliveryTime 분',
+                  renderDot(),
+
+                  _IconText(
+                    icon: Icons.timelapse_outlined,
+                    label: '$deliveryTime 분',
+                  ),
+
+                  renderDot(),
+
+                  _IconText(
+                    icon: Icons.monetization_on,
+                    label: deliveryFee == 0 ? '무료' : deliveryFee.toString(),
+                  ),
+                ],
+              ),
+
+              if (isDetail && detail != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text(detail!),
                 ),
-
-                renderDot(),
-
-                _IconText(
-                  icon: Icons.monetization_on,
-                  label: deliveryFee == 0 ? '무료' : deliveryFee.toString(),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
