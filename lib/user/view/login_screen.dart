@@ -1,10 +1,25 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/common/components/custom_text_form_input.dart';
 import 'package:untitled1/common/const/colors.dart';
+import 'package:untitled1/common/const/data.dart';
+import 'package:untitled1/common/const/dio.dart';
+import 'package:untitled1/common/const/storage.dart';
 import 'package:untitled1/common/layout/default_layout.dart';
+import 'package:untitled1/common/view/root_tap.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String username = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +44,52 @@ class LoginScreen extends StatelessWidget {
                 ),
                 CustomTextFormInput(
                   hintText: '이메일을 입력해주세요.',
-                  onChanged: (String value) {},
+                  onChanged: (String value) {
+                    setState(() {
+                      username = value;
+                    });
+                  },
                 ),
                 const SizedBox(height: 16),
                 CustomTextFormInput(
                   hintText: '비밀번호를 입력해주세요.',
-                  onChanged: (String value) {},
+                  obscureText: true,
+                  onChanged: (String value) {
+                    setState(() {
+                      password = value;
+                    });
+                  },
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final rawStirng = "$username:$password";
+                    Codec<String, String> stringToBase64 = utf8.fuse(base64);
+
+                    final token = stringToBase64.encode(rawStirng);
+
+                    final res = await dio.post(
+                      "$ip/auth/login",
+                      options: Options(
+                        headers: {"authorization": "Basic $token"},
+                      ),
+                    );
+
+                    await storage.write(
+                      key: ACCESS_TOKEN_KEY,
+                      value: res.data['accessToken'],
+                    );
+
+                    await storage.write(
+                      key: REFRESH_TOKEN_KEY,
+                      value: res.data['refreshToken'],
+                    );
+
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const RootTap()),
+                      (route) => false,
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PRIMARY_COLOR,
                     shape: RoundedRectangleBorder(
@@ -48,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                   child: Text('로그인', style: TextStyle(color: Colors.white)),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () async {},
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4),
