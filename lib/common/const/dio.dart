@@ -8,3 +8,7 @@ final simulatorIp = 'http://127.0.0.1:3000'; // For iOS Simulator
 final ip = Platform.isIOS ? simulatorIp : emulatorIp;
 
 final dio = Dio();
+
+pathToUrl(String path) {
+  return '$ip$path';
+}

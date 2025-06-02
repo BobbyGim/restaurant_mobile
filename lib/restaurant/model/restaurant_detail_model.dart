@@ -1,6 +1,10 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:untitled1/common/const/dio.dart';
 import 'package:untitled1/restaurant/model/restaurant_model.dart';
 
+part 'restaurant_detail_model.g.dart';
+
+@JsonSerializable()
 class RestaurantDetailModel extends RestaurantModel {
   final String detail;
   final List<RestaurantProductModel> products;
@@ -19,32 +23,15 @@ class RestaurantDetailModel extends RestaurantModel {
     required this.products,
   });
 
-  factory RestaurantDetailModel.fromJson({required Map<String, dynamic> json}) {
-    return RestaurantDetailModel(
-      id: json['id'],
-      name: json['name'],
-      thumbUrl: '$ip${json['thumbUrl']}',
-      tags: List<String>.from(json['tags']),
-      ratingsCount: json['ratingsCount'],
-      deliveryTime: json['deliveryTime'],
-      deliveryFee: json['deliveryFee'],
-      ratings: json['ratings'],
-      priceRange: RestaurantPriceRange.values.firstWhere(
-        (e) => e.name == json['priceRange'],
-      ),
-      detail: json['detail'] ?? '',
-      products: (json['products'])
-          .map<RestaurantProductModel>(
-            (e) => RestaurantProductModel.fromJson(e),
-          )
-          .toList(),
-    );
-  }
+  factory RestaurantDetailModel.fromJson(Map<String, dynamic> json) =>
+      _$RestaurantDetailModelFromJson(json);
 }
 
+@JsonSerializable()
 class RestaurantProductModel {
   final String id;
   final String name;
+  @JsonKey(fromJson: pathToUrl)
   final String imgUrl;
   final int price;
   final String detail;
@@ -57,13 +44,6 @@ class RestaurantProductModel {
     required this.price,
   });
 
-  factory RestaurantProductModel.fromJson(Map<String, dynamic> json) {
-    return RestaurantProductModel(
-      id: json['id'],
-      name: json['name'],
-      imgUrl: '$ip${json['imgUrl']}',
-      price: json['price'],
-      detail: json['detail'] ?? '',
-    );
-  }
+  factory RestaurantProductModel.fromJson(Map<String, dynamic> json) =>
+      _$RestaurantProductModelFromJson(json);
 }
