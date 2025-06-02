@@ -9,7 +9,9 @@ part of 'restaurant_repository.dart';
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
 
 class _RestaurantRepository implements RestaurantRepository {
-  _RestaurantRepository(this._dio, {this.baseUrl, this.errorLogger});
+  _RestaurantRepository(this._dio, {this.baseUrl, this.errorLogger}) {
+    baseUrl ??= 'http://127.0.0.1:3000/restaurant';
+  }
 
   final Dio _dio;
 
@@ -18,15 +20,43 @@ class _RestaurantRepository implements RestaurantRepository {
   final ParseErrorLogger? errorLogger;
 
   @override
+  Future<CursorPaginationModel<RestaurantModel>> paginateRestaurants() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'accessToken': 'true'};
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CursorPaginationModel<RestaurantModel>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CursorPaginationModel<RestaurantModel> _value;
+    try {
+      _value = CursorPaginationModel<RestaurantModel>.fromJson(
+        _result.data!,
+        (json) => RestaurantModel.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<RestaurantDetailModel> getRestaurantDetail({
     required String id,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{
-      r'authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzQ4ODY1ODQ2LCJleHAiOjE3NDg4NjYxNDZ9.u8W2f3c1HsdQxdhGGTCTASW3dhX4vL6B3o2BkSO6vQU',
-    };
+    final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<RestaurantDetailModel>(

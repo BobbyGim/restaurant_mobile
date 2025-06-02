@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled1/common/const/dio.dart';
 import 'package:untitled1/common/const/storage.dart';
 import 'package:untitled1/common/dio/dio.dart';
 import 'package:untitled1/common/layout/default_layout.dart';
@@ -20,7 +19,7 @@ class RestauranDetailScreen extends StatelessWidget {
 
     dio.interceptors.add(CustomInterceptor(storage: storage));
 
-    final repository = RestaurantRepository(dio, baseUrl: '$ip/restaurant');
+    final repository = RestaurantRepository(dio);
 
     return repository.getRestaurantDetail(id: id);
   }

@@ -1,13 +1,18 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
+import 'package:untitled1/common/model/cursor_pagination_model.dart';
 import 'package:untitled1/restaurant/model/restaurant_detail_model.dart';
+import 'package:untitled1/restaurant/model/restaurant_model.dart';
 
 part 'restaurant_repository.g.dart';
 
-@RestApi()
+@RestApi(baseUrl: 'http://127.0.0.1:3000/restaurant')
 abstract class RestaurantRepository {
-  factory RestaurantRepository(Dio dio, {String baseUrl}) =
-      _RestaurantRepository;
+  factory RestaurantRepository(Dio dio) = _RestaurantRepository;
+
+  @GET('/')
+  @Headers({'accessToken': "true"})
+  Future<CursorPaginationModel<RestaurantModel>> paginateRestaurants();
 
   @GET('/{id}')
   @Headers({'accessToken': "true"})
