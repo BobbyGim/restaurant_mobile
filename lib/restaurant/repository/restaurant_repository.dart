@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:restaurant_mobile/common/model/cursor_pagination_model.dart';
+import 'package:restaurant_mobile/restaurant/model/restaurant_detail_model.dart';
+import 'package:restaurant_mobile/restaurant/model/restaurant_model.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:untitled1/common/model/cursor_pagination_model.dart';
-import 'package:untitled1/restaurant/model/restaurant_detail_model.dart';
-import 'package:untitled1/restaurant/model/restaurant_model.dart';
 
 part 'restaurant_repository.g.dart';
 

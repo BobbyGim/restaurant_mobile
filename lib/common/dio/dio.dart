@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:untitled1/common/const/data.dart';
-import 'package:untitled1/common/const/dio.dart';
+import 'package:restaurant_mobile/common/const/data.dart';
+import 'package:restaurant_mobile/common/const/dio.dart';
 
 class CustomInterceptor extends Interceptor {
   FlutterSecureStorage storage;

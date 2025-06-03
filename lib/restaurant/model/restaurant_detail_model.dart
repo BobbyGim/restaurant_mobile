@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:untitled1/common/const/dio.dart';
-import 'package:untitled1/restaurant/model/restaurant_model.dart';
+import 'package:restaurant_mobile/common/const/dio.dart';
+import 'package:restaurant_mobile/restaurant/model/restaurant_model.dart';
 
 part 'restaurant_detail_model.g.dart';
 

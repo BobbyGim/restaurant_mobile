@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:untitled1/common/const/colors.dart';
-import 'package:untitled1/common/layout/default_layout.dart';
-import 'package:untitled1/restaurant/view/restaurant_screen.dart';
+import 'package:restaurant_mobile/common/const/colors.dart';
+import 'package:restaurant_mobile/common/layout/default_layout.dart';
+import 'package:restaurant_mobile/restaurant/view/restaurant_screen.dart';
 
 class RootTap extends StatefulWidget {
   const RootTap({super.key});

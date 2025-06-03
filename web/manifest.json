@@ -1,6 +1,6 @@
 {
-    "name": "untitled1",
-    "short_name": "untitled1",
+    "name": "restaurant_mobile",
+    "short_name": "restaurant_mobile",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

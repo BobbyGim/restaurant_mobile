@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:untitled1/common/const/dio.dart';
+import 'package:restaurant_mobile/common/const/dio.dart';
 
 part 'restaurant_model.g.dart';
 
