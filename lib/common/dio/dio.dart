@@ -1,7 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:restaurant_mobile/common/const/data.dart';
 import 'package:restaurant_mobile/common/const/dio.dart';
+import 'package:restaurant_mobile/common/secure_storage/secure_storage.dart';
+
+final dioProvider = Provider<Dio>((ref) {
+  final dio = Dio();
+  final storage = ref.watch(secureStorageProvider);
+
+  dio.interceptors.add(CustomInterceptor(storage: storage));
+
+  return dio;
+});
 
 class CustomInterceptor extends Interceptor {
   FlutterSecureStorage storage;

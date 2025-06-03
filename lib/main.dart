@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_mobile/common/view/splash_screen.dart';
 
 void main() {
-  runApp(_App());
+  runApp(ProviderScope(child: const _App()));
 }
 
 class _App extends StatelessWidget {

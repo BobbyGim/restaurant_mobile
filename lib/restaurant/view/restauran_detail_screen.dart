@@ -1,6 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurant_mobile/common/const/storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_mobile/common/dio/dio.dart';
 import 'package:restaurant_mobile/common/layout/default_layout.dart';
 import 'package:restaurant_mobile/product/components/product_card.dart';
@@ -8,28 +7,25 @@ import 'package:restaurant_mobile/restaurant/components/restaurant_card.dart';
 import 'package:restaurant_mobile/restaurant/model/restaurant_detail_model.dart';
 import 'package:restaurant_mobile/restaurant/repository/restaurant_repository.dart';
 
-class RestauranDetailScreen extends StatelessWidget {
+class RestauranDetailScreen extends ConsumerWidget {
   final String id;
   const RestauranDetailScreen({super.key, required this.id});
 
   Future<RestaurantDetailModel> getRestaurantDetail({
-    required String id,
+    required WidgetRef ref,
   }) async {
-    final dio = Dio();
-
-    dio.interceptors.add(CustomInterceptor(storage: storage));
-
+    final dio = ref.watch(dioProvider);
     final repository = RestaurantRepository(dio);
 
     return repository.getRestaurantDetail(id: id);
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DefaultLayout(
       title: "불타는 떡볶이",
       child: FutureBuilder<RestaurantDetailModel>(
-        future: getRestaurantDetail(id: id),
+        future: getRestaurantDetail(ref: ref),
         builder: (context, AsyncSnapshot<RestaurantDetailModel> snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text("오류가 발생했습니다: ${snapshot.error}"));
