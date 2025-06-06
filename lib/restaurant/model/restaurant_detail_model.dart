@@ -31,7 +31,7 @@ class RestaurantDetailModel extends RestaurantModel {
 class RestaurantProductModel {
   final String id;
   final String name;
-  @JsonKey(fromJson: pathToUrl)
+  @JsonKey(fromJson: DataUtils.pathToUrl)
   final String imgUrl;
   final int price;
   final String detail;

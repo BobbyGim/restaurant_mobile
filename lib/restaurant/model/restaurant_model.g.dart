@@ -10,7 +10,7 @@ RestaurantModel _$RestaurantModelFromJson(Map<String, dynamic> json) =>
     RestaurantModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      thumbUrl: pathToUrl(json['thumbUrl'] as String),
+      thumbUrl: DataUtils.pathToUrl(json['thumbUrl'] as String),
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
       ratingsCount: (json['ratingsCount'] as num).toInt(),
       deliveryTime: (json['deliveryTime'] as num).toInt(),

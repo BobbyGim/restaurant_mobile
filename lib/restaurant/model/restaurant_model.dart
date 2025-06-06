@@ -9,7 +9,7 @@ enum RestaurantPriceRange { expensive, cheap, medium }
 class RestaurantModel {
   final String id;
   final String name;
-  @JsonKey(fromJson: pathToUrl)
+  @JsonKey(fromJson: DataUtils.pathToUrl)
   final String thumbUrl;
   final List<String> tags;
   final int ratingsCount;

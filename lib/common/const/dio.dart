@@ -9,6 +9,12 @@ final ip = Platform.isIOS ? simulatorIp : emulatorIp;
 
 final dio = Dio();
 
-pathToUrl(String path) {
-  return '$ip$path';
+class DataUtils {
+  static String pathToUrl(String path) {
+    return '$ip$path';
+  }
+
+  static List<String> listPathsToUrls(List<String> paths) {
+    return paths.map((path) => pathToUrl(path)).toList();
+  }
 }
